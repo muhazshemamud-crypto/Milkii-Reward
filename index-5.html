@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="om">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Milkii Reward</title>
+<style>
+:root{--bg:#070b14;--card:#121a2b;--primary:#6366f1;--green:#10b981;--gold:#f59e0b;--red:#ef4444;--text:#fff;--muted:#94a3b8;--border:rgba(255,255,255,.08)}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#020617;color:var(--text);min-height:100vh;display:flex;justify-content:center}
+.app{width:100%;max-width:460px;height:100vh;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;position:relative}
+.top{height:38px;padding:0 18px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
+.header{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.profile{display:flex;gap:10px;align-items:center}.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#ec4899);display:grid;place-items:center;font-weight:800}
+.profile h2{font-size:15px}.profile p{font-size:11px;color:var(--muted);margin-top:3px}
+.points{background:var(--card);padding:8px 12px;border-radius:20px;color:var(--gold);font-weight:800}
+.content{flex:1;overflow:auto;padding:16px 18px 24px}.view{display:none}.view.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px}
+.balance{text-align:center;background:linear-gradient(135deg,#1e1b4b,#311042)}.balance small{color:var(--muted);text-transform:uppercase}.amount{font-size:38px;font-weight:900;color:var(--gold);margin:8px}.cash{color:var(--green);font-weight:800}
+.btn{width:100%;border:0;border-radius:14px;padding:14px;color:#fff;font-weight:800;font-size:15px;background:linear-gradient(90deg,#6366f1,#a855f7);margin-bottom:14px}
+.btn:disabled{background:#334155;color:#94a3b8}
+.title{font-size:17px;font-weight:900;margin:8px 0 14px}
+.task{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer}
+.task-left{display:flex;align-items:center;gap:12px}.icon{width:44px;height:44px;border-radius:12px;background:#1d2740;display:grid;place-items:center;font-size:20px}.task h4{font-size:14px}.task p{font-size:11px;color:var(--muted);margin-top:4px}.tag{color:var(--gold);font-size:12px;font-weight:800;white-space:nowrap}
+.wheel-wrap{text-align:center;padding-top:10px}.wheel{width:245px;height:245px;border-radius:50%;margin:35px auto 20px;border:8px solid #1e293b;box-shadow:0 0 0 4px #6366f1;position:relative;overflow:hidden;background:conic-gradient(#312e81 0 25%,#1e1b4b 25% 50%,#4f46e5 50% 75%,#111827 75% 100%);transition:transform 3.2s cubic-bezier(.1,1,.1,1)}.wheel span{position:absolute;font-weight:900;font-size:16px}.w1{top:27px;left:105px}.w2{top:105px;right:25px}.w3{bottom:27px;left:103px}.w4{top:105px;left:25px}.pointer{position:absolute;top:2px;left:50%;transform:translateX(-50%);z-index:2;border-left:14px solid transparent;border-right:14px solid transparent;border-top:25px solid var(--red)}
+.video{background:#000;border-radius:14px;overflow:hidden}.video video{display:block;width:100%;height:auto;max-height:65vh;background:#000}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px}
+input,select{width:100%;padding:13px;border-radius:12px;border:1px solid var(--border);background:#09101d;color:#fff;outline:0;margin:6px 0 12px}label{font-size:11px;color:var(--muted);font-weight:700}
+.history-item{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:12px}.history-item:last-child{border:0}
+.ref{display:flex;justify-content:space-between;align-items:center;background:#0b1220;border:1px dashed var(--primary);padding:14px;border-radius:14px}.ref strong{color:var(--gold);letter-spacing:1px}
+.nav{height:70px;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around}.nav button{flex:1;border:0;background:none;color:var(--muted);font-size:10px;font-weight:800}.nav button.active{color:var(--primary)}.nav b{display:block;font-size:20px;margin-bottom:3px}
+.toast{position:absolute;top:48px;left:50%;transform:translate(-50%,-20px);opacity:0;background:#059669;padding:11px 18px;border-radius:25px;font-size:13px;font-weight:800;z-index:20;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+.small-btn{border:0;background:var(--primary);color:#fff;border-radius:9px;padding:8px 12px;font-weight:800}
+.success{color:var(--green)}.danger{color:var(--red)}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="top"><span id="clock">--:--</span><span>📶 🔋</span></div>
+<header class="header">
+<div class="profile"><div class="avatar" id="avatar">M</div><div><h2 id="nameTop">Muhaz Shemamud</h2><p>Miseensa Milkii</p></div></div>
+<div class="points">🪙 <span id="pointsTop">250</span></div>
+</header>
+<div class="toast" id="toast"></div>
+
+<main class="content">
+<section id="dashboard" class="view active">
+<div class="card balance"><small>Qabxii Walii Galaa</small><div class="amount">🪙 <span id="points">250</span></div><div class="cash">Gatiin Isaa: <span id="cash">2.50</span> ETB</div></div>
+<button class="btn" id="daily" onclick="claimDaily()">🎁 Badhaasa Guyyaa (+50)</button>
+<div class="title">Hojiiwwan Qabxii</div>
+<div class="task" onclick="show('spin')"><div class="task-left"><div class="icon">🎡</div><div><h4>Spin & Win</h4><p>Geengoo naannessuun carraa yaali</p></div></div><span class="tag">+10–200</span></div>
+<div class="task" onclick="show('video')"><div class="task-left"><div class="icon">📺</div><div><h4>Viidiyoo Ilaali</h4><p>Viidiyoo appii kanaa ilaali</p></div></div><span class="tag">Tutorial</span></div>
+<div class="task" onclick="show('quiz')"><div class="task-left"><div class="icon">🧮</div><div><h4>Qormaata Herregaa</h4><p>Deebii sirrii kennuun qabxii argadhu</p></div></div><span class="tag">+20</span></div>
+</section>
+
+<section id="spin" class="view">
+<div class="title">🎡 Spin & Win</div><p class="note">Geengoo naannessi. Badhaasni fakkeenyaaf qabxii 10, 50, 100 ykn 200 ta'uu danda'a.</p>
+<div class="wheel-wrap"><div class="pointer"></div><div class="wheel" id="wheel"><span class="w1">+10</span><span class="w2">+50</span><span class="w3">+100</span><span class="w4">+200</span></div><button class="btn" id="spinBtn" onclick="spin()">NAANNESSI!</button></div>
+</section>
+
+<section id="video" class="view">
+<div class="title">📺 Viidiyoo Appii</div>
+<div class="card"><div class="video"><video controls playsinline preload="metadata"><source src="1000004450.mp4" type="video/mp4"><source src="1000004451.mp4" type="video/mp4">Browser kee MP4 kana hin deeggaru.</video></div><p class="note">Faayila MP4 keessaa tokko maqaan isaa 1000004450.mp4 ykn 1000004451.mp4 ta'uu qaba. Yoo maqaan faayilaa adda ta'e, maqaa isaa as keessatti jijjiiri.</p></div>
+</section>
+
+<section id="quiz" class="view">
+<div class="title">🧮 Qormaata Herregaa</div><div class="card"><h2 id="question" style="text-align:center;margin-bottom:15px">5 + 12 = ?</h2><input id="answer" type="number" placeholder="Deebii kee galchi"><button class="btn" onclick="quiz()">Deebisi (+20)</button><p id="quizMsg" class="note"></p></div>
+</section>
+
+<section id="wallet" class="view">
+<div class="title">💳 Wallet</div>
+<div class="card balance"><small>Qarshii Shallagame</small><div class="amount" style="font-size:30px;color:#fff"><span id="walletCash">2.50</span> ETB</div><p class="note">100 qabxii = 1 ETB. Kaffaltiin dhugaa garuu backend/payment system barbaada.</p></div>
+<div class="card"><label>Karaa Kaffaltii</label><select id="method"><option>Telebirr</option><option>CBE Birr</option><option>Kaardii</option></select><label>Lakkoofsa ykn Account</label><input id="account" placeholder="Lakkoofsa galchi"><button class="btn" onclick="withdraw()">Gaaffii Kaffaltii Ergi</button><p class="note">Gaaffiin kun app keessatti seenaa keessatti kuufama; kaffaltii dhugaa erguuf server/payment gateway barbaachisa.</p></div>
+<div class="title">📋 Seenaa Kaffaltii</div><div class="card" id="history"></div>
+</section>
+
+<section id="profile" class="view">
+<div class="title">👤 Profile</div><div class="card">
+<label>Maqaa</label><input id="profileName" placeholder="Maqaa kee">
+<button class="btn" onclick="saveProfile()">Olkaa'i</button>
+<p class="note">Maqaan kun localStorage keessatti kuufama.</p></div>
+<div class="title">🔗 Referral</div><div class="card"><div class="ref"><strong id="refCode">MILKII-250</strong><button class="small-btn" onclick="copyRef()">Copy</button></div><p class="note">Koodii kana hiriyootaaf qoodi. Referral bonus dhugaa kennuuf backend barbaachisa.</p></div>
+<div class="card"><button class="btn" onclick="resetApp()" style="background:#7f1d1d">Data App Haqi</button></div>
+</section>
+</main>
+
+<nav class="nav">
+<button id="nav-dashboard" class="active" onclick="show('dashboard')"><b>🏠</b>Mana</button>
+<button id="nav-spin" onclick="show('spin')"><b>🎡</b>Spin</button>
+<button id="nav-wallet" onclick="show('wallet')"><b>💳</b>Wallet</button>
+<button id="nav-profile" onclick="show('profile')"><b>👤</b>Profile</button>
+</nav>
+</div>
+
+<script>
+const KEY='milkii_reward_v1';
+const defaults={points:250,lastDaily:'',history:[],name:'Muhaz Shemamud',spins:0};
+let data=JSON.parse(localStorage.getItem(KEY)||'null')||defaults;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+function render(){
+ $('points').textContent=data.points;$('pointsTop').textContent=data.points;
+ $('cash').textContent=(data.points/100).toFixed(2);$('walletCash').textContent=(data.points/100).toFixed(2);
+ $('nameTop').textContent=data.name||'Miseensa';$('avatar').textContent=(data.name||'M')[0].toUpperCase();
+ $('profileName').value=data.name||'';
+ $('refCode').textContent='MILKII-'+String(data.points).padStart(3,'0');
+ $('daily').disabled=data.lastDaily===today();
+ $('daily').textContent=data.lastDaily===today()?'✅ Badhaasa Har\'aa Fudhatame':'🎁 Badhaasa Guyyaa (+50)';
+ renderHistory();
+}
+function today(){return new Date().toISOString().slice(0,10)}
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2200)}
+function addPoints(n,reason){data.points=Math.max(0,data.points+n);data.history.unshift({type:'point',reason,amount:n,date:new Date().toLocaleString()});save();toast((n>=0?'🔥 +':'')+n+' Qabxii')}
+function claimDaily(){if(data.lastDaily===today())return toast('Badhaasa har\'aa fudhatameera.');data.lastDaily=today();addPoints(50,'Daily Bonus')}
+function spin(){
+ const b=$('spinBtn');if(b.disabled)return;b.disabled=true;
+ const prizes=[10,50,100,200],prize=prizes[Math.floor(Math.random()*prizes.length)];
+ const turns=5+Math.floor(Math.random()*3),index=prizes.indexOf(prize),deg=turns*360+index*90+45;
+ $('wheel').style.transform='rotate('+deg+'deg)';
+ setTimeout(()=>{data.spins++;addPoints(prize,'Spin & Win');b.disabled=false},3300)
+}
+function quiz(){
+ const a=Number($('answer').value);if(a===17){addPoints(20,'Quiz');$('quizMsg').textContent='✅ Deebii sirrii! +20 qabxii';$('quizMsg').className='note success'}else{$('quizMsg').textContent='❌ Sirrii miti. Yaali ammas.';$('quizMsg').className='note danger'}
+}
+function withdraw(){
+ const method=$('method').value,account=$('account').value.trim(),needed=1000;
+ if(data.points<needed)return toast('Gadi-xiqqaan 1000 qabxii dha.');
+ if(!account)return toast('Lakkoofsa/account galchi.');
+ data.history.unshift({type:'withdraw',reason:method,amount:data.points/100,date:new Date().toLocaleString(),account});
+ data.points=0;save();toast('Gaaffiin kaffaltii galmaaʼeera.');
+ $('account').value='';
+}
+function renderHistory(){
+ const h=$('history');if(!data.history.length){h.innerHTML='<p class="note">Seenaa homaa hin jiru.</p>';return}
+ h.innerHTML=data.history.slice(0,15).map(x=>'<div class="history-item"><span>'+escapeHtml(x.reason)+'<br><small>'+escapeHtml(x.date)+'</small></span><b class="'+(x.type==='withdraw'?'danger':'success')+'">'+(x.type==='withdraw'?'-'+Number(x.amount).toFixed(2)+' ETB':'+'+x.amount)+'</b></div>').join('');
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function saveProfile(){const n=$('profileName').value.trim();if(!n)return toast('Maqaa galchi.');data.name=n;save();toast('Profile olkaa’ame.')}
+function copyRef(){navigator.clipboard?.writeText($('refCode').textContent).then(()=>toast('Referral code copy taʼe.')).catch(()=>toast('Koodii: '+$('refCode').textContent))}
+function resetApp(){if(confirm('Data app hunda haqaa?')){localStorage.removeItem(KEY);data={...defaults};save();toast('Data haaromfame.');show('dashboard')}}
+function show(id){
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+ const n=$('nav-'+id);if(n)n.classList.add('active');
+ document.querySelector('.content').scrollTop=0;
+}
+function clock(){const d=new Date();$('clock').textContent=d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}
+setInterval(clock,1000);clock();render();
+</script>
+</body>
+</html>
