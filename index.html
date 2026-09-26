@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="om"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Telegram Clone — Afaan Oromoo</title><style>
+:root{--bg:#17212b;--panel:#202b36;--blue:#229ed9;--text:#f3f5f7;--muted:#8e9aa6;--bubble:#263f52}*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Arial,sans-serif;background:#0e151c;color:var(--text)}button,input{font:inherit}.app{height:100dvh;max-width:520px;margin:auto;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;position:relative}.top{height:74px;padding:12px 16px;display:flex;align-items:center;gap:12px;background:#1b2733}.avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#33d17a,#29a8ff);display:grid;place-items:center;font-weight:700;font-size:20px;flex:none}.head{flex:1}.head b{display:block;font-size:17px}.head small{color:#8bd7ff}.icon{border:0;background:none;color:white;font-size:22px;padding:7px;cursor:pointer}.search{margin:10px 14px;background:#263442;border-radius:26px;padding:11px 15px;display:flex;gap:10px;align-items:center;color:#8f9ba7}.search input{width:100%;background:none;border:0;outline:0;color:white;font-size:16px}.search input::placeholder{color:#8f9ba7}.content{flex:1;overflow:auto;padding-bottom:92px}.chat{display:flex;gap:12px;padding:12px 15px;cursor:pointer}.chat:hover{background:#202d39}.chat .avatar{width:56px;height:56px}.chatmain{flex:1;min-width:0}.row{display:flex;justify-content:space-between;gap:10px}.name{font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.time{font-size:12px;color:#83919d}.preview{color:#aab5be;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.badge{background:#58b6ec;color:white;border-radius:20px;min-width:22px;height:22px;padding:2px 7px;text-align:center;font-size:12px;margin-top:3px}.nav{position:absolute;bottom:0;left:0;right:0;height:72px;background:#202c38;display:flex;border-top:1px solid #31404d;z-index:4}.nav button{flex:1;border:0;background:none;color:#aeb8c0;font-size:12px}.nav span{display:block;font-size:25px;margin-bottom:2px}.fab{position:absolute;right:18px;bottom:86px;width:60px;height:60px;border-radius:50%;border:0;background:#229ed9;color:#fff;font-size:31px;box-shadow:0 5px 18px #0008;z-index:5}.screen{position:absolute;inset:0;background:var(--bg);z-index:10;display:none;flex-direction:column}.screen.show{display:flex}.bar{height:64px;background:#1d2a36;display:flex;align-items:center;gap:12px;padding:8px 12px}.bar h3{flex:1;margin:0}.body{flex:1;overflow:auto;padding:15px}.chatview{background:#0e1922;flex:1;display:flex;flex-direction:column}.messages{flex:1;overflow:auto;padding:14px}.msg{max-width:80%;background:var(--bubble);padding:8px 11px;border-radius:12px;margin:7px 0}.msg.mine{margin-left:auto;background:#1f6385}.msg small{display:block;color:#9fb0bc;font-size:10px;text-align:right;margin-top:3px}.composer{display:flex;gap:6px;padding:8px;background:#202c38}.composer input[type=text]{flex:1;background:#2a3947;border:0;border-radius:23px;padding:12px;color:white;outline:none}.send{width:46px;border:0;border-radius:50%;background:#229ed9;color:white;font-size:21px}.profile{text-align:center;padding:25px}.bigavatar{width:100px;height:100px;border-radius:50%;margin:auto;background:linear-gradient(135deg,#229ed9,#6d6ff5);display:grid;place-items:center;font-size:42px}.card{background:#202c38;border-radius:14px;margin:12px 0;overflow:hidden}.item{padding:15px;border-bottom:1px solid #34424e;display:flex;justify-content:space-between}.item:last-child{border:0}.muted{color:#91a0ad}.empty{text-align:center;color:#81909d;padding:50px 20px}.toast{position:absolute;left:50%;bottom:88px;transform:translateX(-50%);background:#fff;color:#111;padding:10px 16px;border-radius:22px;display:none;z-index:30;box-shadow:0 4px 20px #0008}</style>
+<style>
+.auth-screen{position:absolute;inset:0;background:#17212b;z-index:50;display:flex;align-items:center;justify-content:center;padding:24px}
+.auth-card{width:100%;max-width:390px;background:#202c38;border-radius:20px;padding:24px;box-shadow:0 10px 35px #0008}
+.auth-card h2{text-align:center;margin:8px 0 4px}.auth-card p{text-align:center;color:#93a2ae}
+.auth-card input{width:100%;margin:7px 0;padding:13px;border:0;border-radius:12px;background:#2c3b49;color:white;outline:0}
+.auth-card button{width:100%;margin-top:9px;padding:13px;border:0;border-radius:12px;background:#229ed9;color:white;font-weight:700}
+.auth-card .secondary{background:#344554}.paybox{background:#202c38;border-radius:15px;padding:15px;margin-top:15px}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/socket.io/socket.io.js"></script>
+</head><body><div class="app">
+<div class="auth-screen" id="authScreen">
+  <div class="auth-card">
+    <div class="bigavatar">M</div>
+    <h2>Telegram Clone</h2>
+    <p id="authHint">Login ykn Register godhi</p>
+    <input id="authName" placeholder="Maqaa (Register qofa)">
+    <input id="authEmail" type="email" placeholder="Email">
+    <input id="authPassword" type="password" placeholder="Password">
+    <button onclick="registerUser()">Register</button>
+    <button class="secondary" onclick="loginUser()">Login</button>
+    <button class="secondary" onclick="logoutUser()">Logout</button>
+  </div>
+</div>
+<header class="top"><div class="avatar">M</div><div class="head"><b>Telegram Clone</b><small id="net">Online / Local mode</small></div><button class="icon" onclick="openScreen('settings')">⋮</button></header><div class="search">🔎 <input id="search" placeholder="Search Chats" oninput="renderChats()"></div><main class="content" id="home"></main><button class="fab" onclick="newChat()">＋</button><nav class="nav"><button onclick="tab('chats')"><span>💬</span>Chats</button><button onclick="tab('contacts')"><span>👤</span>Contacts</button><button onclick="tab('settings')"><span>⚙️</span>Settings</button><button onclick="tab('profile')"><span>●</span>Profile</button></nav><section class="screen" id="chatScreen"><div class="bar"><button class="icon" onclick="closeScreen()">‹</button><div class="avatar" id="chatAvatar">C</div><h3 id="chatTitle">Chat</h3><button class="icon" onclick="callUser('Voice')">📞</button><button class="icon" onclick="callUser('Video')">🎥</button></div><div class="chatview"><div class="messages" id="messages"></div><div class="composer"><button class="icon" onclick="document.getElementById('file').click()">📎</button><input id="file" type="file" hidden onchange="attachFile(event)"><input id="msg" type="text" placeholder="Ergaa barreessi..." onkeydown="if(event.key==='Enter')sendMsg()"><button class="send" onclick="sendMsg()">➤</button></div></div></section><section class="screen" id="settings"><div class="bar"><button class="icon" onclick="closeScreen()">‹</button><h3>Settings</h3></div><div class="body"><div class="card"><div class="item"><span>🔔 Notifications</span><span>›</span></div><div class="item"><span>🔒 Privacy & Security</span><span>›</span></div><div class="item"><span>🌙 Dark Mode</span><span>ON</span></div><div class="item"><span>🌐 Language</span><span>Afaan Oromoo</span></div><div class="item" onclick="showToast('Cache qulqulleessame')"><span>🧹 Clear Cache</span><span>›</span></div></div></div></section><section class="screen" id="profile"><div class="bar"><button class="icon" onclick="closeScreen()">‹</button><h3>Profile</h3></div><div class="body profile"><div class="bigavatar">M</div><h2>Muhaz</h2><p class="muted">@user</p><div class="card" style="text-align:left"><div class="item"><span>📱 Phone</span><span class="muted">Hidden</span></div><div class="item"><span>✏️ Edit Profile</span><span>›</span></div></div></div></section><section class="screen" id="contacts"><div class="bar"><button class="icon" onclick="closeScreen()">‹</button><h3>Contacts</h3></div><div class="body" id="contactList"></div></section><div class="toast" id="toast"></div></div><script>
+const defaultChats=[{id:1,name:'QOOSAA😅FT 🏅',initial:'Q',preview:'Isaa: mukaa 1 fi mukaa 1 waliin...',time:'11:04 PM',unread:5},{id:2,name:'Maddaa Beekumsa',initial:'M',preview:'Sophia: ❤️',time:'11:04 PM',unread:0},{id:3,name:'Barachuun Humna',initial:'B',preview:'BARANNEETI BARACHUUN HUMNA...',time:'11:04 PM',unread:0},{id:4,name:'BBC Afaan Oromoo',initial:'B',preview:'Dura taa’aan Komishinii Gamt...',time:'10:43 PM',unread:1},{id:5,name:'Oromia Education Bureau',initial:'O',preview:'Oromia Education Bureau pinned...',time:'10:07 PM',unread:4},{id:6,name:'Garee Tafsiira Quraanaa',initial:'G',preview:'@user joined the group',time:'9:16 PM',unread:0}];let chats=JSON.parse(localStorage.getItem('clone_chats')||'null')||defaultChats,current=null,messages=JSON.parse(localStorage.getItem('clone_messages')||'{}');function avatarColor(i){return ['#e53935','#6d6e71','#00897b','#e53935','#637ee8','#4b4037'][i%6]}function renderChats(){const q=(document.getElementById('search').value||'').toLowerCase(),list=chats.filter(c=>(c.name+c.preview).toLowerCase().includes(q));document.getElementById('home').innerHTML=list.length?list.map((c,i)=>`<div class="chat" onclick="openChat(${c.id})"><div class="avatar" style="background:${avatarColor(i)}">${esc(c.initial)}</div><div class="chatmain"><div class="row"><div class="name">${esc(c.name)}</div><div class="time">${c.time}</div></div><div class="row"><div class="preview">${esc(c.preview)}</div>${c.unread?`<div class="badge">${c.unread}</div>`:''}</div></div></div>`).join(''):`<div class="empty">Chat hin argamne.</div>`}function openChat(id){current=chats.find(c=>c.id===id);document.getElementById('chatTitle').textContent=current.name;document.getElementById('chatAvatar').textContent=current.initial;document.getElementById('chatScreen').classList.add('show');renderMessages()}function closeScreen(){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('show'));renderChats()}function renderMessages(){const arr=messages[current.id]||[];document.getElementById('messages').innerHTML=arr.length?arr.map(m=>`<div class="msg ${m.mine?'mine':''}">${m.html}<small>${m.time}</small></div>`).join(''):`<div class="empty">Ergaa jalqabaa barreessi.</div>`;document.getElementById('messages').scrollTop=999999}function sendMsg(){const inp=document.getElementById('msg'),text=inp.value.trim();if(!text)return;addMsg({html:esc(text),mine:true});inp.value=''}function addMsg(m){if(!messages[current.id])messages[current.id]=[];messages[current.id].push({...m,time:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});localStorage.setItem('clone_messages',JSON.stringify(messages));renderMessages();chats=chats.map(c=>c.id===current.id?{...c,preview:m.html.replace(/<[^>]+>/g,''),time:'Amma'}:c);localStorage.setItem('clone_chats',JSON.stringify(chats))}function attachFile(e){const f=e.target.files[0];if(!f)return;if(f.type.startsWith('image/')){const r=new FileReader();r.onload=()=>addMsg({html:`<img src="${r.result}" style="max-width:100%;border-radius:8px">`,mine:true});r.readAsDataURL(f)}else addMsg({html:`📎 ${esc(f.name)}`,mine:true});e.target.value=''}function newChat(){const name=prompt('Maqaa nama ykn garee galchi:');if(!name)return;const id=Date.now();chats.unshift({id,name,initial:name[0].toUpperCase(),preview:'Chat haaraa',time:'Amma',unread:0});localStorage.setItem('clone_chats',JSON.stringify(chats));renderChats();openChat(id)}function tab(t){if(t==='chats'){closeScreen();return}openScreen(t)}function openScreen(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('show'));const el=document.getElementById(id);if(el)el.classList.add('show');if(id==='contacts')document.getElementById('contactList').innerHTML=chats.map(c=>`<div class="chat" onclick="openChat(${c.id})"><div class="avatar">${esc(c.initial)}</div><div class="chatmain"><div class="name">${esc(c.name)}</div><div class="preview">Tap to chat</div></div></div>`).join('')}function callUser(type){showToast(type+' call: backend/WebRTC barbaada.')}function showToast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',2200)}function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}renderChats();
+</script>
+<script>
+let supabaseClient = null;
+let accessToken = null;
+let onlineSocket = null;
+
+async function initOnline() {
+  try {
+    const cfg = await fetch('/api/config').then(r=>r.json());
+    if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) {
+      document.getElementById('net').textContent='Local mode — config hin guutamne';
+      return;
+    }
+    supabaseClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+    const {data:{session}} = await supabaseClient.auth.getSession();
+    if (session) await onlineReady(session);
+    supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+      if (session) await onlineReady(session); else showAuth();
+    });
+  } catch(e) {
+    document.getElementById('net').textContent='Offline';
+  }
+}
+
+async function registerUser(){
+  if(!supabaseClient) return showToast('Supabase config duraan qopheessi.');
+  const name=document.getElementById('authName').value.trim();
+  const email=document.getElementById('authEmail').value.trim();
+  const password=document.getElementById('authPassword').value;
+  if(!email||password.length<6) return showToast('Email fi password (6+) galchi.');
+  const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{display_name:name}}});
+  if(error) return showToast(error.message);
+  if(data.session) await onlineReady(data.session);
+  else showToast('Email kee mirkaneessi, sana booda Login godhi.');
+}
+
+async function loginUser(){
+  if(!supabaseClient) return showToast('Supabase config duraan qopheessi.');
+  const email=document.getElementById('authEmail').value.trim();
+  const password=document.getElementById('authPassword').value;
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error) return showToast(error.message);
+  await onlineReady(data.session);
+}
+
+async function logoutUser(){
+  if(supabaseClient) await supabaseClient.auth.signOut();
+  showAuth();
+}
+
+async function onlineReady(session){
+  accessToken=session.access_token; hideAuth();
+  document.getElementById('net').textContent='Online';
+  connectSocket();
+}
+
+function showAuth(){document.getElementById('authScreen').style.display='flex';}
+function hideAuth(){document.getElementById('authScreen').style.display='none';}
+
+function connectSocket(){
+  if(onlineSocket) onlineSocket.disconnect();
+  onlineSocket=io({auth:{token:accessToken}});
+  onlineSocket.on('connect',()=>document.getElementById('net').textContent='Online');
+  onlineSocket.on('connect_error',()=>document.getElementById('net').textContent='Server connection error');
+  onlineSocket.on('new_message',m=>{
+    if(current && String(m.receiver_id)===String(current.id)) {
+      addMsg({html:esc(m.content),mine:false});
+    }
+  });
+}
+
+async function sendOnlineMessage(text){
+  if(onlineSocket && onlineSocket.connected && current) {
+    onlineSocket.emit('send_message',{receiver_id:current.id,content:text,type:'text'});
+    return true;
+  }
+  return false;
+}
+
+const oldSendMsg = sendMsg;
+sendMsg = async function(){
+  const inp=document.getElementById('msg'), text=inp.value.trim();
+  if(!text) return;
+  if(await sendOnlineMessage(text)){inp.value='';return;}
+  oldSendMsg();
+};
+
+async function startPayment(){
+  const amount=prompt('Hanga mee ETB kaffaluu barbaadda?');
+  if(!amount || isNaN(amount) || Number(amount)<=0) return;
+  if(!accessToken) return showToast('Jalqaba Login godhi.');
+  const res=await fetch('/api/pay/chapa',{
+    method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},
+    body:JSON.stringify({amount:Number(amount),description:'Telegram Clone payment'})
+  });
+  const data=await res.json();
+  if(!res.ok) return showToast(data.error||'Payment hin jalqabne.');
+  if(data.checkout_url) location.href=data.checkout_url;
+}
+</script>
+
+<script>window.addEventListener('load',initOnline);</script>
+</body></html>
